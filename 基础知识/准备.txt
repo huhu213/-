@@ -1,0 +1,282 @@
+angularJs中，$scope对象充当viewModel, 完成数据绑定；
+通过service封装和处理与model相关的业务逻辑(即直接和数据库或者ajax交互)
+controller提供viewmodel对象的操作，并操作service在数据传递到viewmodel中
+
+项目：
+1、双课堂手机App
+ionic框架基于AngularJS框架。
+逻辑处理通过调用API接口发起http请求完成，在controller中完成逻辑处理，基本事件主要是ng-click事件。有些情况下需要注意冒泡，在ng-click函数中加入event参数。
+发表主题等通过接口调用android原生的编辑器，页面通过ionic组件modal实现，使数据在同一页面中，避免了不同页面间的数据通信。评论及回复编辑器页面均通过modal，即时显示通过双向绑定实现。
+ui-router主要是定义了一些不同页面的state，通过ui-sref定跳转。$stateProvider提供state接口。
+
+通过gulpfile.js文件确定需要的task，通过gulp启动。less文件编译和自动刷新等。
+less调用gulp-less模块，自动刷新通过gulp.watch监听css文件和js文件的变化进行页面reload。
+
+2、专家辅导系统
+分为教师端和学生端，主要利用angularJS指令实现页面逻辑。
+页面没有复杂的交互，因此对性能要求不高，同时接口比较完备，可以实现数据和页面分离。主要使用的指令有ng-click，ng-checked，ng-class以及ng-src等。nodejs搭建内部访问端口是通过node server启动静态服务器，提供页面访问url。
+
+ajax请求通过$q实现的promise方式完成，http请求成功后，defer.resolve(data)，请求失败defer.reject(data)，返回一个promise对象，在controller中定义promise调用方法，得到请求结果。
+
+AngularJs1.5新特性：$resource服务将$q服务封装到内部，不再显式地声明defer变量和返回promise对象，直接调用$resource，给定url和moethod即可。
+
+主题发布等逻辑：
+通过绑定ng-click事件，调用不同API进行数据交互，同时实时显示当前页面数据。
+ui-router：
+ajax请求不能留下history记录，app中返回操作非常多；
+通过给app定义状态，通过事件操作进行状体转移，但是需要根据原型预先定义状态，
+通过ui-sref进行状态跳转，在module的config中，通过$stateProvider定义状态和对应的url。
+当页面中子页面不多时，也可以通过data-ng-include指令嵌入子页面。
+
+gulp命令，通过bowerSyn和reload包，watch监听css、js和html文件的变化，实时刷新页面；
+
+
+Less动态样式语言，将样式通过变量、继承、运算、函数等操作，更方便CSS的编写和维护。
+嵌套：
+在一个父级元素的内部，通过样式嵌套，实现该父元素下子元素的样式修改，代码量减少且层次清楚。
+
+
+遇到的问题及解决办法：
+1、App
+回复评论等点击事件的冒泡问题，由于手机屏幕较小，回复等操作非常多，点击事件绑定的区域有重叠；
+解决办法：尽量不重叠绑定区域，重合时通过冒泡进行解决。
+评论页面作为独立页面需要和当前页面有数据交互，提交的内容需要及时显示到页面中，如果放在作为单独页面，则显示的页面需要重新发起一次ajax请求，用户体验不够好。
+解决办法：通过ionic自带的组件modal在当前页面调用模态框，数据交互在同一页面。通过双向绑定及时显示页面，而不用再发起ajax请求。
+2、专家辅导
+资源链接时效性问题：
+返回绝对链接是有时效性的，改为存储相对路径，每次查看资源的时候，再获取绝对路径。
+IE兼容性问题：资源播放链接中对于/进行了转义，需要去掉转义符，调用replace函数；
+一些固定格式的文本显示，比如时间、文件大小等的显示，通过自定义指令对传入的参数进行处理。
+
+
+1、盒子模型
+盒子模型规定了元素框处理元素内容、内边距padding、边框border和外边距margin的方式。HTML文档中，每个元素都有盒子模型。模型中，由内而外分别是内容、内边距、边框、外边距。
+外边距可以是负值，默认是透明，不会遮挡其后的元素。元素的背景为由内容、内边距和边框构成。
+
+2、块级元素和行内元素的特性和区别
+行内元素在水平方向上排列，块级元素在垂直方向上排列。块级元素可以包含块级和行内元素，而行内元素只能包含行内元素。
+行内元素设置width和height无效，margin上下和padding上下无效。可以设置line-height设定高度。
+text-align属性用于对块级元素内的行内元素居中对齐。然而在IE6/7以及IE8的混杂模式中，也可以作用于块级元素。
+
+3、W3C对定位的三种描述
+http://www.uml.org.cn/html/201305301.asp
+一个盒子可以有三种定位方式：
+normal flow(正常流、标准文档流): 包括块级元素排版，行内元素排版以及对块级元素和行内元素相对位置的排版；
+floats(浮动): 浮动模型中， 元素先按照正常文档流定位，然后从文档流中移出，根据设定的向左或向右尽可能地移动；由于要先根据常规布局之后才偏移，因此效率较常规流低。
+absolute positioning(绝对定位): 完全从normal flow中移出，对后续元素没有影响，再根据父元素进行定位。
+
+CSS2.1标准文档中说明，元素的定位方式是由position属性和display共同决定的。
+position: static relative absolute fixed inherit
+常规定位static: 设置top值等无效
+相对定位relative: 元素本身按static方式定位，但是相对于原位置有偏移。但是对于display设置为table-*的元素无效。
+绝对定位absolute: 脱离normal flow，通过left等来设置。参照元素是包含元素的父元素。绝对定位对相邻元素的定位没有影响，相互之间的层叠关系是用z-index来设置的，同时，绝对定位的元素的margin之间也不会重叠。
+固定定位fixed: 计算方式和绝对定位一样，但是不依赖父元素，而是在屏幕显示器上的位置固定不变。可以通过设定@media screen和@media print表现不同的定位方式。
+@media screen {
+    h1#first { position: fixed; }
+}
+@media print {
+    h1#first { position: static; }
+}
+
+定位方式top/right/left/bottom
+取值为length(值)、percentage、auto和inherit
+
+其中auto对于非替换元素，auto的效果取决于哪些相关的属性同样具有auto值。auto值表示元素的上下左右距离可以根据相关联的，或者说具有共同父元素的子元素之间的关系自动调整。
+
+Normal Flow: 常规流
+主要基于格式化上下文(Formatting Context)相对定位(Relative Position)两个方面。FC包含Block Formatting Context和Inline Formatting Context。
+BFC，指的是块级元素顺次垂直排列，并可以嵌套。当块级Box内部是行内元素时，产生IFC；只要有一个元素是块级元素，就会产生BFC。
+注意：当外层块级元素的overflow:vvisible，则不会产生BFC和IFC。
+IFC中，行内框在行框垂直方向的对齐方式：行框高度总是足够包含其容纳的所有框，可能会高于它包含的最高框，和vertical-align属性相关。vertical-align属性取值：baseline, sub, top, text-top, middle, bottom, text-bottom,length, percentage, inherit.
+行内框在水平方向的对齐方式：
+行内框宽度总和小于包含框的水平宽时，水平方向的对齐取决于text-align属性。
+
+5、各大浏览器内核：
+IE: trident内核
+FireFox: gecko内核
+Safari: webkit内核
+Chrome: Blink(基于webkit内核)
+
+内核即渲染引擎，rendering engines，通过网络获得所请求的文档的内容，通常以8k分块的方式完成。
+主要流程如下：
+解析html构建DOM树，构建render树，布局render树，绘制render树。
+
+6、Doctype作用
+<!DOCTYPE>声明位于文档最前面，此声明告诉浏览器按照何种规范解析页面。
+
+7、alt属性和title属性
+用于图像无法显示或者用户禁止图像显示时的文本替代信息。为不能显示图像、窗体或applets的用户代理指定替换文字。
+不允许有任何样式，同时IE下鼠标放到图像上也会显示该信息，而其他浏览器只有在图片无法显示时显示。
+title属性为设置该属性的元素提供信息。
+strong粗体强调标签，em斜体强调标签
+
+8、优雅降级(graceful degradation)和渐进增强(progressive enhancement)
+渐进增强针对低版本进行页面构建，保证低版本浏览器也能完成基本的功能，然后针对高级浏览器进行效果、交互等改进。关注与内容本身，认为内容是网站的根本。
+优雅降级直接构建完整的功能和显示，再针对低版本进行兼容性处理。认为应该根据最高级的浏览器来设计和构建网站。针对版本低的浏览器的测试和兼容工作放在开发的最后阶段。
+
+区别：优雅降级从负责的现状开始，一步步减少页面效果的实现，而渐进增强是从基础的版本开始不断扩充以适应环境的需要。
+
+9、使用多个域名存储资源的有效性
+CDN缓存更方便，突破浏览器并发显示，节约主域名的连接数，优化页面响应速度，防止不必要的安全问题。
+
+10、CDN
+content delivery network，内容分发网络。基本思路是尽可能避开影响网络传输速度和稳定性的瓶颈和化解，使内容传输更快更稳定。通过在网络各处放置节点服务器所构成在现有互联网上的一层智能虚拟网络，实时地根据当前状况将用户请求导向到里用户最近的服务节点。目的是使用户尽可能就近获得内容，提高用户访问网站的响应速度。
+关键技术分为内容存储和分发技术。广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中。
+
+11、建立Web标准的必要性
+建立标准是为了更方便更快捷地进行Web开发。遵循统一的标准可以有效降低开发难度和成本，SEO更好，有效减少代码的bug和安全问题，提高网站可用性。
+
+12、sessionStorage、localStorage和cookie
+a) sessionStorage用于本地存储一个会话seesion中的数据，当会话结束，数据也将被清除。会话级别的存储，不是持久化的存储。
+b) localStorage用于本地持久化存储数据，除非用户手动清除，否则存储内容将会一直存储在浏览器中。
+
+sessionStorage和localStorage属于webStorage，和cookie相比，有更大的存储容量。并有封装好的setItem等方法。cookie提供与服务器的交互，作为HTTP规范的一部分而存在。cookie大小受限制(4KB)，并且每次请求新页面cookie都会被发送，需要指定作用域，不能跨域调用。
+
+13、常用图片格式
+png/ipeg/gif/svg/webp等。webp由google开发的一种旨在加快图片加载速度的图片格式，压缩后体积大约只有jpg的2/3，能节省大量服务器带宽资源和数据空间。
+
+14、一次js请求的缓存处理
+dns缓存，cdn缓存，浏览器缓存以及服务器缓存。
+
+15、SEO: Search Engine Opimization, 搜索引擎优化。通过网站内部调整优化及站外优化，使网站满足搜索引擎收录排名需求，提高关键词排名，获得免费流量。
+
+搜索引擎工作的基本原理：各搜索引擎之间的区别，爬虫的工作原理，搜索引擎对搜索结果的排序等。
+
+16、CSS选择器：派生、类、id、后代、群组等。CSS样式和定义的样式的先后顺序有关，而和在HTML中书写的先后顺序无关。
+
+17、rgba/opacity/em/px
+rgba针对元素的颜色或背景色，其子元素不会继承透明结果；opacity则作用于元素及元素内部的所有内容。em继承父级元素字体大小。
+
+18、垂直居中浮动元素
+已知元素高宽
+#div {
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -100px;
+}
+
+未知元素高宽
+#div {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    height: 0;
+    bottom: 0;
+}
+
+19、img垂直居中
+#container {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+20、div+css的布局较table的优点
+改版更方便只需要改css文件
+页面加载速度更快，结构化清晰，页面显示简洁
+表现与结构分离
+易于优化，seo更友好，排名更容易靠前
+
+21、设置元素不在浏览器显示范围内
+display: none/visibility: hidden/设置宽高为0，透明度为0，z-index为-1000
+
+22、被访问过的超链接不再具有hover样式，解决方式是改变CSS的属性排列顺序，即L-V-H-A.
+23、CSS Hack：针对不同浏览器写不同的CSS code。常见的CSS Hack：
+
+24、默认天生额inline-block元素，拥有内在尺寸，可以设置宽高，但是不会自动换行
+<input> <button> <img> <textarea> <label>
+
+25、inline-block元素若换行排列，会出现空格间隙，可以通过letter-spacing解决。
+26、Less是一种动态样式语言，将CSS赋予了动态语言的特性，如变量、继承、运算和函数等。可以在浏览器或者js解析器上运行。
+好处：结构清晰，便于扩展和重用。
+方便地屏蔽浏览器私有语法差异，轻松实现多重继承，完全兼容CSS代码。
+
+27、CSS3 background-clip属性
+设定背景图片位于content-box还是padding-box还是border-box中
+word-wrap属性
+强制换行
+设定字体@font-face, ttf或者otf文件
+@font-face {
+font-family: myFont,
+src:
+url('Sansation_Light.ttf'),
+url('Sansation_Light.eot'); /* IE9+ */
+}
+
+div {
+font-family: myFont;
+}
+
+2D转换
+translate(): 从当前位置移动，由给定left和top坐标移动到指定位置
+rotate(): 元素顺时针转给定的角度，负值表示元素逆时针旋转，单位deg
+scale(x, y): 元素按给定倍数放大，x表示宽，y表示高
+skew(x, y): 元素按给定角度翻转，x表示按x轴翻转，y表示按y轴翻转
+div {
+     transform: translate(x,y);
+     -ms-transform: translate(x, y);
+     -webkit-transform: translate(x, y);
+     -o-transform: translate(x, y);
+     -moz-transform: translate(x, y);
+}
+
+3D转换：
+rotateX, rotateY等
+
+过渡效果：
+div {
+transition: width 2s, height 2s, transform 2s;
+//兼容性处理
+}
+div:hover {
+width: 100px;
+height: 100px;
+transform: rotate(180deg);
+//兼容性代码
+}
+以上代码表示鼠标悬停元素时，旋转180度，时长为2s
+
+CSS3 动画
+@keyframes规则：用于创建动画，在@key_frames中规定某项样式，就能实现样式的改变。
+1、创建keyframes规则
+@keyframes “myAni"{
+from {color: #000000；}
+to {color: #00ffcc;}
+}
+@-moz-keyframes:
+@-webkit-keyframes:
+@-o-keyframes:
+2、将key_frames绑定到选择器，并规定至少动画名称和动画时长
+div {
+animation: myAni 5s;
+-moz-animation:
+-webkit-animation:
+-o-animation:
+}
+
+CSS3 多列:
+column-count: 规定元素应该被分隔的列数
+column-gap: 规定列间距
+column-rule: 设定列宽，样式和颜色
+
+div {
+-moz-column-count: 3;
+-webkit-column-count: 3;
+column-count: 3
+}
+
+CSS3 用户界面：
+resize：规定用户是否可以改变box大小，取值none, both, horizontal, vertical
+box-sizing: 以确切的方式定义适应某个区域的具体内容
+设定样式适用的范围：border-box/content-box/inherit
+outline-offset: 对轮廓进行偏移， 并在超出边框边沿的位置绘制轮廓，轮廓不占空间且可能是非矩形
+div {
+border: 1px solid #000000;
+outline: 2px solid #FFF000;
+outline-offset: 15px;
+}

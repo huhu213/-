@@ -1,0 +1,145 @@
+1、盒子模型
+盒子模型规定了元素框处理元素内容、内边距padding、边框border和外边距margin的方式。HTML文档中，每个元素都有盒子模型。模型中，由内而外分别是内容、内边距、边框、外边距。
+外边距可以是负值，默认是透明，不会遮挡其后的元素。元素的背景为由内容、内边距和边框构成。
+
+2、块级元素和行内元素的特性和区别
+行内元素在水平方向上排列，块级元素在垂直方向上排列。块级元素可以包含块级和行内元素，而行内元素只能包含行内元素。
+行内元素设置width和height无效，margin上下和padding上下无效。可以设置line-height设定高度。
+text-align属性用于对块级元素内的行内元素居中对齐。然而在IE6/7以及IE8的混杂模式中，也可以作用于块级元素。
+
+3、非替换元素和替换元素
+HTML的大多数元素都是替换元素，将内容直接告诉浏览器，浏览器再显示出来；非替换元素指的是浏览器根据标签的元素和属性来判断具体显示的内容。
+
+4、常规流和W3C对定位的三种描述
+一个盒子可以有三种定位方式：
+normal flow(正常流、标准文档流): 包括块级元素排版，行内元素排版以及对块级元素和行内元素相对位置的排版；
+floats(浮动): 浮动模型中， 元素先按照正常文档流定位，然后从文档流中移出，根据设定的向左或向右尽可能地移动；
+absolute positioning(绝对定位): 完全从normal flow中移出，再根据父元素进行定位。
+
+CSS2.1标准文档中说明，元素的定位方式是由position属性和display共同决定的。
+position: static relative absolute fixed inherit
+常规定位static: 设置top值等无效
+相对定位relative: 元素本身按static方式定位，但是相对于原位置有偏移。但是对于display设置为table-*的元素无效。
+绝对定位absolute: 脱离normal flow，通过left等来设置。参照元素是包含元素的父元素。绝对定位对相邻元素的定位没有影响，相互之间的层叠关系是用z-index来设置的，同时，绝对定位的元素的margin之间也不会重叠。
+固定定位fixed: 计算方式和绝对定位一样，但是不依赖父元素，而是在屏幕显示器上的位置固定不变。可以通过设定@media screen和@media print表现不同的定位方式。
+@media screen {
+    h1#first { position: fixed; }
+}
+@media print {
+    h1#first { position: static; }
+}
+
+定位方式top/right/left/bottom
+取值为length(值)、percentage、auto和inherit
+
+其中auto对于非替换元素，auto的效果取决于哪些相关的属性同样具有auto值。auto值表示元素的上下左右距离可以根据相关联的，或者说具有共同父元素的子元素之间的关系自动调整。
+
+Normal Flow: 常规流
+主要基于格式化上下文(Formatting Context)相对定位(Relative Position)两个方面。FC包含Block Formatting Context和Inline Formatting Context。
+BFC，指的是块级元素顺次垂直排列，并可以嵌套。当块级Box内部是行内元素时，产生IFC；只要有一个元素是块级元素，就会产生BFC。
+注意：当外层块级元素的overflow:vvisible，则不会产生BFC和IFC。
+行内框在行框垂直方向的对齐方式：
+行框高度总是足够包含其容纳的所有框，可能会高于它包含的最高框，和vertical-align属性相关。vertical-align属性取值：baseline, sub, top, text-top, middle, bottom, text-bottom,length, percentage, inherit.
+行内框在水平方向的对齐方式：
+行内框宽度总和小于包含框的水平宽时，水平方向的对齐取决于text-align属性。
+
+5、各大浏览器内核：
+IE: trident内核
+FireFox: gecko内核
+Safari: webkit内核
+Chrome: Blink(基于webkit内核)
+
+内核即渲染引擎，rendering engines，通过网络获得所请求的文档的内容，通常以8k分块的方式完成。
+主要流程如下：
+解析html构建DOM树，构建render树，布局render树，绘制render树。
+
+6、Doctype作用
+<!DOCTYPE>声明位于文档最前面，此声明告诉浏览器按照何种规范解析页面。
+
+7、alt属性和title属性
+用于图像无法显示或者用户禁止图像显示时的文本替代信息。不允许有任何样式，同时IE下鼠标放到图像上也会显示该信息，而其他浏览器只有在图片无法显示时显示。
+title属性为设置该属性的元素提供信息。
+strong粗体强调标签，em斜体强调标签
+
+8、优雅降级(graceful degradation)和渐进增强(progressive enhancement)
+渐进增强针对低版本进行页面构建，保证低版本浏览器也能完成基本的功能，然后针对高级浏览器进行效果、交互等改进。关注与内容本身，认为内容是网站的根本。
+优雅降级直接构建完整的功能和显示，再针对低版本进行兼容性处理。认为应该根据最高级的浏览器来设计和构建网站。针对版本低的浏览器的测试和兼容工作放在开发的最后阶段。
+
+区别：优雅降级从负责的现状开始，一步步减少页面效果的实现，而渐进增强是从基础的版本开始不断扩充以适应环境的需要。
+
+9、使用多个域名存储资源的有效性
+CDN缓存更方便，突破浏览器并发显示，节约主域名的连接数，优化页面响应速度，防止不必要的安全问题。
+
+10、CDN
+content delivery network，内容分发网络。基本思路是尽可能避开影响网络传输速度和稳定性的瓶颈和化解，使内容传输更快更稳定。通过在网络各处放置节点服务器所构成在现有互联网上的一层智能虚拟网络，实时地根据当前状况将用户请求导向到里用户最近的服务节点。目的是使用户尽可能就近获得内容，提高用户访问网站的响应速度。
+关键技术分为内容存储和分发技术。广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中。
+
+11、建立Web标准的必要性
+建立标准是为了更方便更快捷地进行Web开发。遵循统一的标准可以有效降低开发难度和成本，SEO更好，有效减少代码的bug和安全问题，提高网站可用性。
+
+12、sessionStorage、localStorage和cookie
+a) sessionStorage用于本地存储一个会话seesion中的数据，当会话结束，数据也将被清除。会话级别的存储，不是持久化的存储。
+b) localStorage用于本地持久化存储数据，除非用户手动清除，否则存储内容将会一直存储在浏览器中。
+
+sessionStorage和localStorage属于webStorage，和cookie相比，有更大的存储容量。并有封装好的setItem等方法。cookie提供与服务器的交互，作为HTTP规范的一部分而存在。cookie大小受限制(4KB)，并且每次请求新页面cookie都会被发送，需要指定作用域，不能跨域调用。
+
+13、常用图片格式
+png/ipeg/gif/svg/webp等。webp由google开发的一种旨在加快图片加载速度的图片格式，压缩后体积大约只有jpg的2/3，能节省大量服务器带宽资源和数据空间。
+
+14、一次js请求的缓存处理
+dns缓存，cdn缓存，浏览器缓存以及服务器缓存。
+
+15、SEO: Search Engine Opimization, 搜索引擎优化。通过网站内部调整优化及站外优化，使网站满足搜索引擎收录排名需求，提高关键词排名，获得免费流量。
+
+搜索引擎工作的基本原理：各搜索引擎之间的区别，爬虫的工作原理，搜索引擎对搜索结果的排序等。
+
+16、CSS选择器：派生、类、id、后代、群组等。CSS样式和定义的样式的先后顺序有关，而和在HTML中书写的先后顺序无关。
+
+17、rgba/opacity/em/px
+rgba针对元素的颜色或背景色，其子元素不会继承透明结果；opacity则作用于元素及元素内部的所有内容。em继承父级元素字体大小。
+
+18、垂直居中浮动元素
+已知元素高宽
+#div {
+	height: 100px;
+	width: 100px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -100px;
+}
+
+未知元素高宽
+#div {
+	position: absolute;
+	margin: auto;
+	left: 0;
+	top: 0;
+	height: 0;
+	bottom: 0;
+}
+
+19、img垂直居中
+#container {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+angularJs中，$scope对象充当viewModel, 完成数据绑定；
+通过service封装和处理与model相关的业务逻辑(即直接和数据库或者ajax交互)
+controller提供viewmodel对象的操作，并操作service在数据传递到viewmodel中。
+
+
+
+
+
+
+
+
+
+
+
+
