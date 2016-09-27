@@ -36,3 +36,10 @@ png/ipeg/gif/svg/webp等。webp由google开发的一种旨在加快图片加载�
 ### CSS中link和@import的区别
 * link是HTML标签，@import是CSS关键字，用于引入样式
 * 页面加载时，link对应的css文件会同时被加载，而@import引入的样式则在页面加载完成之后才进行加载
+
+### CSS清除浮动
+
+1. 使用带clear属性的空元素
+2. 使用css的overflow属性
+3. 使用伪元素:after
+4. 使用邻接元素处理
