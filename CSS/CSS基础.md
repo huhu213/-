@@ -40,6 +40,26 @@ png/ipeg/gif/svg/webp等。webp由google开发的一种旨在加快图片加载�
 ### CSS清除浮动
 
 1. 使用带clear属性的空元素
-2. 使用css的overflow属性
+>     <div class="container">
+           <div style="float: left"></div>
+           <div style="float: left"></div>
+           <div style="clear: both"></div>
+      </div>
+
+2. 使用css的overflow属性-设置父元素overflow:hidden；子元素高度大于父元素时，会使得超出部分被隐藏,不支持IE6
 3. 使用伪元素:after
+>     <div class="container">
+           <div style="float: left"></div>
+           <div style="float: left"></div>
+      </div>
+      .container:after {
+          content: '\0020';
+          display: block;
+          height: 0;
+          clear: both;
+      }
+      .container {
+          zoom: 1;//兼容IE6，通过Layout实现页面布局
+      }
+
 4. 使用邻接元素处理
