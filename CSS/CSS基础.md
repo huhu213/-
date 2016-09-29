@@ -63,3 +63,5 @@ png/ipeg/gif/svg/webp等。webp由google开发的一种旨在加快图片加载�
       }
 
 4. 使用邻接元素处理
+
+DOM树和渲染树不是一一对应的，不可见的元素比如head不会被渲染，display:none的元素也不会添加到渲染树种，但visibility: hidden的元素会。

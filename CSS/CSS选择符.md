@@ -1,6 +1,6 @@
 #CSS选择器
 
-选择符API是对原生DOM API的扩展，Selectos API由W3C发起制定，Selectos API Level1的核心是两个方法，querySelector() 和 querySelectorAll()。
+选择符API是对原生DOM API的扩展，Selectors API由W3C发起制定，Selectors API Level1的核心是两个方法，querySelector() 和 querySelectorAll()。
 
 **可以对Document/Element/DocumentFragment类型的实例调用这两个方法**
 
@@ -18,20 +18,20 @@
 
 ###关系选择符
 
-* 包含选择符(A B) 
+* 包含选择符(A B)
 
   A元素包含的所有B元素
-  
-* 子选择符(A>B) 
+
+* 子选择符(A>B)
 
   A元素的儿子元素中的B元素
 
-* 相邻选择符(A+B) 
+* 相邻选择符(A+B)
 
   紧跟着A的B元素
-  
+
 * 兄弟选择符
-  
+
   所有与A是兄弟的元素B，而不仅仅是相邻的
 
 ###属性选择符
@@ -81,7 +81,7 @@
 * E:first-letter/E::first-letter：设置块级元素内第一个字符的样式，通常**用来配合font-size和属性float属性设置首字下沉的样式**
 
 * CSS3中，伪类选择器使用:单冒号，伪对象选择器使用::双冒号
-> 
+>
 >     p:first-letter {
 >         font-size: 200%;
 >         color: #8A2BE2;
@@ -93,7 +93,7 @@
 >     p::before {
 >          content: "test";
 >     }
-> 
+>
 >     p::after {
 >          content: "test";
 >     }     
@@ -113,10 +113,10 @@
         input::-moz-placeholder { // Firefox19+
 	        color: #999;
         }
- 
+
  * **E::selection**：::selection只能定义被选择时的background-color，color以及text-shadow
 
- 
+
 ###CSS 选择器优先级 CSS Specify
 
 一般而言，选择器越特殊，它的优先级越高。也就是选择器指向的越准确，它的优先级就越高。
@@ -170,8 +170,3 @@
 * 不在class选择器前使用标签名，直接用类选择器就好
 
 * 尽量使用类选择器代替层级关系
-
-
-
- 
-
