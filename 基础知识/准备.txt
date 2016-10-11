@@ -52,6 +52,8 @@ IE兼容性问题：资源播放链接中对于/进行了转义，需要去掉�
 1、盒子模型
 盒子模型规定了元素框处理元素内容、内边距padding、边框border和外边距margin的方式。HTML文档中，每个元素都有盒子模型。模型中，由内而外分别是内容、内边距、边框、外边距。
 外边距可以是负值，默认是透明，不会遮挡其后的元素。元素的背景为由内容、内边距和边框构成。
+border-box: width表示content+padding+border值
+content-box: width表示content的值，实际元素宽度需加上padding值
 
 2、块级元素和行内元素的特性和区别
 行内元素在水平方向上排列，块级元素在垂直方向上排列。块级元素可以包含块级和行内元素，而行内元素只能包含行内元素。
@@ -86,7 +88,7 @@ position: static relative absolute fixed inherit
 Normal Flow: 常规流
 主要基于格式化上下文(Formatting Context)相对定位(Relative Position)两个方面。FC包含Block Formatting Context和Inline Formatting Context。
 BFC，指的是块级元素顺次垂直排列，并可以嵌套。当块级Box内部是行内元素时，产生IFC；只要有一个元素是块级元素，就会产生BFC。
-注意：当外层块级元素的overflow:vvisible，则不会产生BFC和IFC。
+注意：当外层块级元素的overflow:visible，则不会产生BFC和IFC。
 IFC中，行内框在行框垂直方向的对齐方式：行框高度总是足够包含其容纳的所有框，可能会高于它包含的最高框，和vertical-align属性相关。vertical-align属性取值：baseline, sub, top, text-top, middle, bottom, text-bottom,length, percentage, inherit.
 行内框在水平方向的对齐方式：
 行内框宽度总和小于包含框的水平宽时，水平方向的对齐取决于text-align属性。
@@ -96,6 +98,7 @@ IE: trident内核
 FireFox: gecko内核
 Safari: webkit内核
 Chrome: Blink(基于webkit内核)
+Opera: Presto(也投入webkit的怀抱了)
 
 内核即渲染引擎，rendering engines，通过网络获得所请求的文档的内容，通常以8k分块的方式完成。
 主要流程如下：

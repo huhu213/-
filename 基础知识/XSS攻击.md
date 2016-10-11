@@ -48,12 +48,9 @@ Cookie HttpOnly:
 >            <http-only>true</http-only>
 >        </cookie-config>
 >     </session-config>
-> 
+>
 
- get->post
+get->post
 http header referrer: browser not support empty
 ID校验 用户的id
 token
-
-
-

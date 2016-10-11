@@ -6,7 +6,12 @@ cookies是服务器端用于在http客户端保存状态的位于http请求heade
 
 服务端可以通过Path/Domain指定客户端发送cookie数据到每一个path和每一个指定的domain的子域。
 
-父域可以获取子域的cookie，子域间不能跨域读取cookie。服务器端忽略Domain时，cookie只会被发送给origin server。当父域客户端发送cookie时，若没有指定Domain的值，可能会默认为当前主机名，从而可能会将cookie同时发送到子域(和浏览器有关)。若服务器
+父域可以获取子域的cookie，子域间不能跨域读取cookie。服务器端忽略Domain时，cookie只会被发送给origin server。当父域客户端发送cookie时，若没有指定Domain的值，可能会默认为当前主机名，从而可能会将cookie同时发送到子域(和浏览器有关)。
+
+服务器可以设置cookie的expire date。
+
+secure: 表示服务器指定cookie只能通过https/tls等安全协议进行传送
+httpOnly: 表示cookie数据只能在http请求中被访问，不能在js中进行读取和修改
 
 > == Server -> User Agent ==
 Set-Cookie: SID=31d4d96e407aad42; Path=/; Domain=example.com
